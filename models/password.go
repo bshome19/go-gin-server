@@ -1,7 +1,7 @@
 package models
 
-type MyPasswords struct {
-	Id string `json:"id"`
-	Website string `json:"website"`
+type MyPassword struct {
+	Website string `json:"website" gorm:"primary_key"`
 	Password string `json:"password"`
+	UserId string `json:"user_id"`
 }

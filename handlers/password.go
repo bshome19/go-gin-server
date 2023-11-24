@@ -9,13 +9,19 @@ import (
 
 
 func GetPasswords(c *gin.Context) {
-	var pb_list []models.MyPasswords
-	configs.DB.Find((&pb_list))
+	var pb_list []models.MyPassword
+	user_id := c.Param("user_id")
+	res := configs.DB.Where("user_id = ?", user_id).Find(&pb_list)
+	if res.Error != nil {
+		c.JSON(http.StatusNoContent, gin.H{"error": "No such user"})
+		// return user, res.Error
+	}
+	// configs.DB.Find((&pb_list))
 	c.IndentedJSON(http.StatusOK, pb_list)
 }
 
 func PostPasswords(c *gin.Context) {
-	var pb models.MyPasswords
+	var pb models.MyPassword
 
 	if err := c.ShouldBindJSON(&pb) ; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()}) 
